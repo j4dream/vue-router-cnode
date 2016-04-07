@@ -28,6 +28,9 @@
     <div class="container">
     	<router-view></router-view>
     </div>
+    <div class="ajax-loading">
+    	<span>Loading...</span>
+    </div>
 </template>
 
 
@@ -37,5 +40,24 @@
 	}
 	a {
 		cursor: pointer;
+	}
+	.ajax-loading {
+		position: fixed;
+		top: 30%;
+		background: white;
+		left: 50%;
+		z-index: 9999;
+		animation: ajax 1.5s infinite;
+	}
+	@keyframes ajax {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.5;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 </style>
