@@ -26,6 +26,9 @@ module.exports = {
 		extensions: ['', '.js', '.vue']
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin()
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.ProvidePlugin({
+			'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+		})
 	]
 }

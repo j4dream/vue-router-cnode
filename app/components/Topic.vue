@@ -9,7 +9,7 @@
 			<li v-for="reply in topic.replies">
 				<div class="reply">
 					<div class="img-cover">
-						<img src="{{reply.author.avatar_url}}" alt="">	<label>{{reply.author.loginname}}:</label>
+						<img :src="reply.author.avatar_url" alt="">	<label>{{reply.author.loginname}}:</label>
 					</div>
 					<div class="reply-content">
 						<p>{{{reply.content}}}</p>
@@ -42,6 +42,7 @@
 </style>
 
 <script>
+	import { wget } from '../libs/ajax'
 	export default {
 		data() {
 			return {
@@ -50,9 +51,10 @@
 		},
 		route: {
 			data({to}) {
-				$.get(`https://cnodejs.org/api/v1/topic/${to.params.id}`, ({data}) => {
-					this.topic = data
-				})
+				wget(`https://cnodejs.org/api/v1/topic/${to.params.id}`)
+					.then(({data}) => {
+						this.topic = data
+					})
 			}
 		}
 	}

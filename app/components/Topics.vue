@@ -1,7 +1,9 @@
 <template>
-	<table class="table table-striped">
+	<table class="table table-striped topics">
 		<tbody>
 			<tr v-for="topic in topics">
+				<td><img :src="topic.author.avatar_url" alt=""></td>
+				<td>{{ topic.reply_count }}/{{ topic.visit_count }}</td>
 				<td><a v-link="{path: '/topic/' + topic.id}">{{ topic.title }}</a></td>
 			</tr>
 		</tbody>
@@ -9,7 +11,7 @@
 </template>
 
 <script>
-	
+import { wget } from '../libs/ajax'
 export default {
 	data() {
 		return {
@@ -26,24 +28,13 @@ export default {
 
 	route: {
 		data({to}) {
-
-			console.log(to)
 			this.options.tab = to.params.tab
 
-			let $win = $(window),
-				$doc = $(document);
-
-			$(window).on('scroll', () => {
-				if($doc.height() - $win.scrollTop() - $win.height() < 100) {
-					if(this.loading) return
-					console.log('load data la')
-					this.getTopics()
-				}
-			})
+			document.addEventListener('scroll', this.scrollLoadData)
 			this.getTopics()
 		},
 		deactivate() {
-			$(window).off('scroll')
+			document.removeEventListener('scroll', this.scrollLoadData)
 		}
 	},
 
@@ -55,18 +46,40 @@ export default {
 				this.options.page = 1
 				this.topics.length = 0
 				this.currentTab = this.$route.params.tab
-				$(window).scrollTop(0)
+				document.body.scrollTop = 0
 			}
 			this.loading = true
-			$.get('https://cnodejs.org/api/v1/topics', this.options, ({data}) => {
-				this.loading = false
-				if(data && data.length) {
-					for(let i = 0, l = data.length; i < l; i++) {
-						this.topics.push(data[i])
+
+			wget('https://cnodejs.org/api/v1/topics', {query:this.options})
+				.then(({data}) => {
+					this.loading = false
+					if(data && data.length) {
+						for(let i = 0, l = data.length; i < l; i++) {
+							this.topics.push(data[i])
+						}
 					}
-				}
-			})
+				})
+		},
+		scrollLoadData() {
+			let winHeight = document.documentElement.clientHeight,
+					docHeight = document.documentElement.offsetHeight,
+					scrollTop = document.body.scrollTop;
+
+			if(docHeight - scrollTop - winHeight < 100) {
+				if(this.loading) return
+				this.getTopics()
+			}
 		}
 	}
 }
 </script>
+<style>
+	.topics td {
+		vertical-align: middle !important;
+	}
+	.topics td img {
+		border-radius: 3px;	
+		width: 30px;
+		height: 30px;
+	}
+</style>
