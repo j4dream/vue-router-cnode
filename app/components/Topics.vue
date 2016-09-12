@@ -12,6 +12,7 @@
 
 <script>
 import { wget } from '../libs/ajax'
+import Utils from '../libs/utils'
 export default {
 	data() {
 		return {
@@ -32,6 +33,7 @@ export default {
 
 			document.addEventListener('scroll', this.scrollLoadData)
 			this.getTopics()
+			console.log(Utils.isObject({}))
 		},
 		deactivate() {
 			document.removeEventListener('scroll', this.scrollLoadData)

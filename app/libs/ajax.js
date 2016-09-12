@@ -24,6 +24,8 @@ const addQueryStr = (url, params) => {
 	return url
 }
 
+
+
 export function wget(url, options) {
 	return fetch(addQueryStr(url, options && options.query))
 		.then(parseJSON)
