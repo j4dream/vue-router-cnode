@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import App from './components/App'
 import Topics from './components/Topics'
 import Topic from './components/Topic'
+import Test from './components/Test'
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,9 @@ router.map({
 	},
 	'/topic/:id': {
 		component: Topic
+	},
+	'/test': {
+		component: Test
 	}
 })
 
