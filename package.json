@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "dev": "webpack-dev-server"
+  },
   "dependencies": {
     "exports-loader": "^0.6.3",
     "imports-loader": "^0.6.5",
