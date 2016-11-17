@@ -1,7 +1,9 @@
 <template>
-    <div>test</div>
-    <am></am>
-    <bm></bm>
+    <div>
+        <div>test</div>
+        <am></am>
+        <bm></bm>
+    </div>
 </template>
 
 <script>

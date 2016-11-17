@@ -1,30 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 import App from './components/App'
-import Topics from './components/Topics'
-import Topic from './components/Topic'
-import Test from './components/Test'
+import routes from './routes'
 
 Vue.use(VueRouter)
 
-var router = new VueRouter()
-
-
-router.map({
-	'/topics/:tab': {
-		component: Topics
-	},
-	'/topic/:id': {
-		component: Topic
-	},
-	'/test': {
-		component: Test
-	}
+var router = new VueRouter({
+  routes
 })
 
-router.redirect({
-	'*': '/topics/all'
+new Vue({
+  router,
+  el: '#app',
+  render: h => h(App)
 })
-
-router.start(App, '#app')

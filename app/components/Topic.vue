@@ -1,23 +1,23 @@
 <template>
-	<h2>{{topic.title}}</h2>
-	<main>
-		{{{topic.content}}}
-	</main>
-	<hr>
-	<section>
-		<ul>
-			<li v-for="reply in topic.replies">
-				<div class="reply">
-					<div class="img-cover">
-						<img :src="reply.author.avatar_url" alt="">	<label>{{reply.author.loginname}}:</label>
+	<div>
+		<h2>{{topic.title}}</h2>
+		<main v-html="topic.content"></main>
+		<hr>
+		<section>
+			<ul>
+				<li v-for="reply in topic.replies">
+					<div class="reply">
+						<div class="img-cover">
+							<img :src="reply.author.avatar_url" alt="">	<label>{{reply.author.loginname}}:</label>
+						</div>
+						<div class="reply-content">
+							<p v-html="reply.content"></p>
+						</div>
 					</div>
-					<div class="reply-content">
-						<p>{{{reply.content}}}</p>
-					</div>
-				</div>
-			</li>
-		</ul>
-	</section>
+				</li>
+			</ul>
+		</section>
+	</div>
 </template>
 
 <style>
@@ -49,12 +49,18 @@
 				topic: {}
 			}
 		},
-		route: {
-			data({to}) {
-				wget(`https://cnodejs.org/api/v1/topic/${to.params.id}`)
+		
+		created() {
+			let id = this.$route.params.id
+			wget(`https://cnodejs.org/api/v1/topic/${id}`)
 					.then(({data}) => {
 						this.topic = data
 					})
+		},
+
+		route: {
+			data({to}) {
+				
 			}
 		}
 	}

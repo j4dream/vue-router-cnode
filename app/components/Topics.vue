@@ -4,7 +4,7 @@
 			<tr v-for="topic in topics">
 				<td><img :src="topic.author.avatar_url" alt=""></td>
 				<td>{{ topic.reply_count }}/{{ topic.visit_count }}</td>
-				<td><a v-link="{path: '/topic/' + topic.id}">{{ topic.title }}</a></td>
+				<td><router-link :to="{path: `/topic/${topic.id}`}">{{ topic.title }}</router-link></td>
 			</tr>
 		</tbody>
 	</table>
@@ -27,17 +27,22 @@ export default {
 		}
 	},
 
-	route: {
-		data({to}) {
-			this.options.tab = to.params.tab
-
-			document.addEventListener('scroll', this.scrollLoadData)
+	watch: {
+		$route() {
+			this.options.tab = this.$route.params.tab
 			this.getTopics()
-			console.log(Utils.isObject({}))
-		},
-		deactivate() {
-			document.removeEventListener('scroll', this.scrollLoadData)
 		}
+	},
+
+	created() {
+		this.options.tab = this.$route.params.tab
+		document.addEventListener('scroll', this.scrollLoadData)
+		this.getTopics()
+	},
+
+	beforeRouteLeave(to, from, next) {
+		document.removeEventListener('scroll', this.scrollLoadData)
+		next()
 	},
 
 	methods: {
